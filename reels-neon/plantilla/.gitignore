@@ -1,0 +1,7 @@
+node_modules/
+stills/
+contact.jpg
+audio/_*.wav
+audio/sonidos.json
+.env
+*.mp4
