@@ -5,7 +5,8 @@ description: >-
   fondo marino con brillo azul, tarjetas de cristal, una escena por frase con destello de luz, mascota 3D
   que acompaña cada idea, fotos realistas con IA, terminal/chat/código animados, subtítulos karaoke,
   voz sincronizada palabra a palabra, música, efectos y CTA «Comenta PALABRA». Úsala cuando pidan
-  «un reel neón», «un reel como el de la skill de reels», «hazme un reel sobre X» con este estilo,
+  «hazme un reel sobre X» o «un reel animado de X» (aunque no nombren el estilo), «un reel neón»,
+  «un reel como el de la skill de reels»,
   «reel con mascota y tarjetas que brillan», «un reel que ofrezca mi guía o
   skill», o quieran convertir un tema, tutorial o producto en un reel animado sin grabarse. También para
   cambiar escenas, colores, mascota, voz o música de un reel hecho con esta skill.
