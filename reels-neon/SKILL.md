@@ -55,6 +55,8 @@ Escribe `guion.txt`, **una frase por línea, una línea por escena**: entre 8 y 
 Enseña el guion con la idea visual de cada línea. Espera el visto bueno, salvo que haya pedido hacerlo directo.
 
 ## 3 · Montar el proyecto
+**La primera vez, comprueba el equipo:** `node -v` (18 o más), `ffmpeg -version` y `python3 -c "import numpy, PIL"`. Si falta algo, di qué es y ofrécete a instalarlo con el gestor de paquetes del sistema (en Mac, `brew`). Si un instalador pide la contraseña del ordenador, la escribe el usuario.
+
 ```bash
 cp -R <skill>/plantilla ./<nombre-del-reel> && cd ./<nombre-del-reel>
 npm install && npx playwright install chromium        # una vez por proyecto
