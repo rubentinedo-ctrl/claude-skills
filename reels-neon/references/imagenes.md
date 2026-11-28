@@ -2,6 +2,8 @@
 
 Sirve cualquier generador de imágenes: ChatGPT, Gemini (Nano Banana), Higgsfield, Freepik/Magnific (tiene imágenes gratis cada día), Midjourney… Si el entorno tiene un conector de imágenes, úsalo. Si no, dale al usuario los prompts para que los genere y guarde los archivos en la carpeta.
 
+**Antes de generar con un conector, mira cuánto cuesta** (su herramienta de coste o la ayuda del modelo) y elige un modelo gratuito o barato. Si cada imagen gasta créditos de pago, di cuántos y pregunta antes.
+
 ## Mascota (solo si el usuario la pide y trae su personaje o logo)
 Por defecto el reel no lleva mascota. Nunca uses la de `ejemplo/` en un reel del usuario.
 
@@ -28,4 +30,4 @@ Por defecto el reel no lleva mascota. Nunca uses la de `ejemplo/` en un reel del
   > Photorealistic cinematic photo of [escena], [luz: blue ambient neon / golden hour / dramatic warm light], shallow depth of field, high detail, no readable text, no logos.
 - **Sin caras reconocibles:** pide «no face visible» y usa manos, siluetas o espaldas.
 - **Ambientación, no prueba:** las fotos de IA son ilustrativas. No las presentes como «resultado real de un cliente».
-- **Dónde van:** `img/` (jpg de unos 1000–1600 px de ancho), con las rutas en `images`.
+- **Dónde van:** `img/` (jpg de unos 1000–1600 px de ancho), con las rutas en `images`. Los planes gratuitos suelen dar 720–900 px: valen a pantalla completa con `velo()` y Ken Burns, y en cuadrículas sin problema.

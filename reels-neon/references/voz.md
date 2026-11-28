@@ -5,7 +5,7 @@ Para eso hacen falta el audio y **el tiempo de cada palabra**.
 
 ## Opción A: ElevenLabs por API (recomendada)
 1. Crea `.env` en la carpeta del proyecto con `ELEVENLABS_API_KEY=...`. Nunca la pegues en el chat ni la subas a ningún sitio.
-2. Ejecuta `python3 audio/voz.py <VOICE_ID> toma [modelo]`. El modelo por defecto es `eleven_multilingual_v2`; prueba `eleven_v3` si tu cuenta lo tiene.
+2. Ejecuta `python3 audio/voz.py <VOICE_ID> toma [modelo]`. El modelo por defecto es `eleven_multilingual_v2`; si tu cuenta tiene uno más nuevo (`eleven_v3`, `eleven_v4`…), pásalo como tercer argumento y compara.
    - Lee `guion.txt` y escribe `audio/toma.mp3` y `audio/toma.json`.
    - Usa el endpoint `with-timestamps`, así que no hace falta Whisper.
 3. Si quieres elegir entre dos tomas: `python3 audio/voz.py <VOICE_ID> tomaB`.
@@ -13,7 +13,7 @@ Para eso hacen falta el audio y **el tiempo de cada palabra**.
 El `voice_id` está en ElevenLabs › Voices › tu voz › «Copy voice ID». Una voz clonada suena a ti.
 
 ## Opción B: otra herramienta, un conector o un audio que ya tengas
-Sirve también si Claude tiene un conector de ElevenLabs (o de otra voz) en vez de la API: genera con él el guion entero en una sola toma, descarga el audio y sigue estos pasos.
+Sirve también si Claude tiene un conector de ElevenLabs (o de otra voz) en vez de la API: genera con él el guion entero en una sola toma (el texto de `guion.txt`, con las líneas unidas por espacios), busca en la respuesta del conector o en la consulta de su tarea la URL del audio, descárgalo enseguida con `curl -L -o audio/toma.mp3 <url>` (suelen ser enlaces firmados que caducan) y sigue estos pasos. Si el conector genera varias tomas por defecto, pide una sola (p. ej. `generations_count: 1`): cobra cada toma. Como referencia, una toma de unos 48 s con ElevenLabs gasta del orden de 700–800 créditos.
 
 1. Pon el audio en `audio/toma.mp3`. Debe decir exactamente el texto de `guion.txt`.
 2. Saca los tiempos con Whisper (gratis, en local):
@@ -31,7 +31,7 @@ Sirve también si Claude tiene un conector de ElevenLabs (o de otra voz) en vez 
 - deja 0,3 s de respiración entre escenas;
 - y escribe `audio/vo.wav`, `audio/words.json` y `timing.js`.
 
-Revisa la tabla que imprime: cada fila debe empezar con su frase.
+Revisa la tabla que imprime: cada fila debe empezar con su frase. Solo avisa cuando un corte no cae en silencio; entonces escúchalo.
 
 ### `audio/cortes.json` (solo si hace falta)
 ```json

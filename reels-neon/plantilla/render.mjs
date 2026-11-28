@@ -1,6 +1,6 @@
 // Render de reels-neon.
 //   node render.mjs                         → vídeo mudo _mudo.mp4 + audio/sonidos.json
-//   node render.mjs --stills 1,5.5,9        → añade fotogramas sueltos a stills/ (no borra los que hay)
+//   node render.mjs --stills 1,5.5,9        → fotogramas sueltos en sueltos/ (no toca stills/)
 //   node render.mjs --every 1.5             → vacía stills/ y saca un fotograma cada 1,5 s
 //   --video otro.js   (por defecto video.js)    --out nombre.mp4
 import { chromium } from 'playwright';
@@ -27,10 +27,9 @@ const grab = async (t, q = 0.92) => Buffer.from(await page.evaluate(([t, q]) => 
 const stills = arg('--stills'), every = arg('--every');
 if (stills || every) {
   const ts = stills ? stills.split(',').map(Number) : Array.from({ length: Math.floor(dur / +every) + 1 }, (_, i) => +(i * +every).toFixed(2));
-  if (every) fs.rmSync('stills', { recursive: true, force: true });   // --every rehace la tanda; --stills añade sin borrar
-  fs.mkdirSync('stills', { recursive: true });
-  for (const t of ts) fs.writeFileSync(`stills/s_${t.toFixed(2).padStart(6, '0')}.jpg`, await grab(t, 0.85));
-  console.log(`${ts.length} fotogramas → stills/  (duración ${dur.toFixed(2)} s)`);
+  const dir = every ? 'stills' : 'sueltos'; fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir);
+  for (const t of ts) fs.writeFileSync(`${dir}/s_${t.toFixed(2).padStart(6, '0')}.jpg`, await grab(t, 0.85));
+  console.log(`${ts.length} fotogramas → ${dir}/  (duración ${dur.toFixed(2)} s)`);
 } else {
   const out = arg('--out', '_mudo.mp4'), n = Math.round(dur * fps);
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p', out], { stdio: ['pipe', 'inherit', 'inherit'] });

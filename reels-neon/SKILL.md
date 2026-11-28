@@ -44,14 +44,15 @@ Si el pedido ya trae tema y objetivo, no hagas una entrevista larga: decide con 
 - **Color de acento:** azul neón por defecto. Se cambia con `paleta({ blue: '#…', cyan: '#…' })`.
 
 ## 2 · Guion
-Escribe `guion.txt`, **una frase por línea, una línea por escena**: entre 8 y 11 líneas, unas 120–150 palabras. Los subtítulos saldrán con el texto exacto de este archivo (tildes, mayúsculas, «Uno:»), así que escríbelo bien.
-- **Gancho:** primera línea, en menos de 2 s. Que choque o prometa algo concreto.
+Escribe `guion.txt` en la carpeta del reel (si aún no existe, haz antes el paso 3), **una frase por línea, una línea por escena**: entre 8 y 11 líneas, unas 110–140 palabras (con las respiraciones entre escenas salen 45–55 s). Los subtítulos saldrán con el texto exacto de este archivo (tildes, mayúsculas, «Uno:»), así que escríbelo bien.
+- **Gancho:** la primera línea, corta (se dice en 2–3 s). Que choque, nombre a quién va dirigido o abra una pregunta que el reel cierra al final: eso retiene hasta el último segundo.
 - **Valor:** una idea por línea, en orden de historia: problema → cómo funciona → pasos → resultado.
 - **CTA:** la última línea dice la palabra exacta, «Comenta X y te mando…».
-- Escribe los números como se dicen («tres pasos») y evita siglas que la voz lea raro.
+- Escribe los números como se dicen («tres pasos») y evita siglas que la voz lea raro: «inteligencia artificial», no «IA», también en pantalla.
+- La palabra del CTA va en mayúsculas y escrita como se pronuncia en el país del usuario («Comenta VÍDEO» en España). El cartel neón es texto dibujado y puede decirla sin tilde.
 - No inventes cifras. Lo que no sepas con certeza, dilo sin número.
 
-Enseña el guion con la idea visual de cada línea. Espera el visto bueno, salvo que haya pedido hacerlo directo.
+Escribe también `STORYBOARD.md` (por línea: la frase y la idea visual concreta de su escena) y enséñaselo. Espera el visto bueno, salvo que haya pedido hacerlo directo.
 
 ## 3 · Montar el proyecto
 **La primera vez, comprueba el equipo:** `node -v` (18 o más), `ffmpeg -version` y `python3 -c "import numpy, PIL"`. Si la voz no viene de ElevenLabs por API (opción B o C de `references/voz.md`), también `whisper --help`. Si falta algo, di qué es y ofrécete a instalarlo con el gestor de paquetes del sistema (en Mac, `brew`). Si un instalador pide la contraseña del ordenador, la escribe el usuario.
@@ -80,11 +81,12 @@ Pon `guion.txt` en la carpeta. La plantilla trae sus fuentes (Inter y JetBrains 
 Primero mira `plantilla/piezas.demo.js` (`node render.mjs --video piezas.demo.js --every 1`) para ver las piezas genéricas. Después escribe `video.js` con la estructura de `ejemplo/video.ejemplo.js`:
 1. `import` de `neon.js` y de `./timing.js`.
 2. `const { B, kw, WORDS, VOEND } = tiempos(SC)` y `END = VOEND + 3`.
-3. La tabla `T` con los momentos clave, siempre desde la voz: `kw(escena, 'palabra')`. No pongas segundos a mano.
+3. La tabla `T` con los momentos clave, siempre desde la voz: `kw(escena, 'palabra')`, sin tildes y contando escenas desde 0. Si la palabra sale dos veces en la frase, `kw(escena, 'palabra', 2)`. No pongas segundos a mano. Si la consola avisa «kw: … no está tal cual», revisa ese momento.
 4. Una función por escena, `sX(c, t, K)`, con su titular (`head`) y su pieza central, pensada para lo que dice esa frase. Las recetas están en `references/escenas.md`.
 5. `SCN = [[B(0), s0], [B(1), s1], …]`, `FLASH` y `karaoke(WORDS)`.
 6. El objeto exportado, con `dur`, `images` (todas las rutas que uses), `render` y `sonidos`. En `render`, `marcaAgua(c, '@usuario')` solo con el @ del usuario; si no dio ninguno, no la pongas.
-7. **Cierre:** con firma, `END = VOEND + 3` y la firma entra tras la voz (`firma()`). Sin firma, el CTA se queda hasta el final y `END = VOEND + 2`.
+7. **Cierre:** con firma, `END = VOEND + 3` y la firma entra tras la voz: copia su foto y su logo a `firma/` y llama a `firma(c, t, K, VOEND + 0.35, { foto: 'firma/foto.png', nombre, usuario: '@…', lema, logo: 'firma/logo.png', logoTexto: 'Fundador de' })` (todos los campos son opcionales; pon las rutas en `images`). Sin firma, el CTA se queda hasta el final y `END = VOEND + 2`.
+8. Los textos de `piezas.demo.js` son de relleno: escribe los tuyos para el tema.
 
 Reglas del estilo (más en `references/estilo.md`):
 - **Zonas de pantalla:**
@@ -96,6 +98,7 @@ Reglas del estilo (más en `references/estilo.md`):
 - **Variedad:** no repitas la misma pieza central dos escenas seguidas. Alterna foto a pantalla completa, número grande, lista, antes/ahora, chat en el móvil, iconos, tarjetas y dibujos propios del tema.
 - **Mascota (si la hay):** como mucho en una de cada dos escenas. Nunca tapa texto ni la franja de subtítulos.
 - **Lo que debe verse:** si algo tiene que verse, que aparezca al menos 1 s antes del cambio de escena.
+- **Gancho (escena 0):** el titular ya está en el primer fotograma, sin esperar a la voz; su píldora o su momento entran antes de 0,6 s. En el resto de escenas, cada palabra clave entra cuando la voz la dice.
 
 ## 7 · Revisión (obligatoria antes del render)
 ```bash
@@ -108,7 +111,7 @@ Abre `contact.jpg` y busca:
 - escenas vacías;
 - subtítulos sobre una pieza.
 
-Para revisar un instante concreto: `node render.mjs --stills 12.3,12.6` (se añaden a `stills/` sin borrar la tanda anterior). Corrige y vuelve a mirar. Los errores típicos están en `references/estilo.md`.
+Para revisar un instante concreto: `node render.mjs --stills 12.3,12.6`; salen en `sueltos/` (`python3 contact.py sueltos sueltos.jpg 4 540`). Corrige y vuelve a mirar. Los errores típicos están en `references/estilo.md`.
 
 ## 8 · Música y render
 - **Música:**

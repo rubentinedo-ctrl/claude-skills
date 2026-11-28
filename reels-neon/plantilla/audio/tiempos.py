@@ -65,7 +65,9 @@ def load(take):
             else: cur = 0
             if cur > best[0]: best = (cur, i0 + bs)
         cut = (best[1] + best[0] / 2) / SR
-        if abs(cut - s) > 0.3: warn.append(f'escena {k}: el corte ({cut:.2f} s) cae lejos del inicio de «{G[i][1]}» ({s:.2f} s). Escúchalo; si suena mal, usa «ventanas» en audio/cortes.json.')
+        db = 20 * np.log10(rms[int(cut * SR)] + 1e-9)
+        # Solo avisa si el corte no cae en silencio: si está a −45 dB o menos, es un desfase del reconocedor y suena bien.
+        if db > -45: warn.append(f'escena {k}: el corte ({cut:.2f} s) no cae en silencio ({db:.0f} dB) cerca de «{G[i][1]}» ({s:.2f} s). Escúchalo; si suena mal, usa «ventanas» en audio/cortes.json.')
         return cut
 
     cuts = [0.0] + [silence(k) for k in range(1, len(LINES))] + [len(a) / SR]

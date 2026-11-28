@@ -26,9 +26,13 @@ export const typed = (s, t, t0, cps = 26) => s.slice(0, Math.max(0, Math.min(s.l
 export const norm = w => String(w).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
 export function tiempos(SC) {
   const B = i => SC[i].start;
-  // kw(escena, 'palabra', n) → segundo en que se dice la n-ésima palabra que empieza así en esa escena
-  const kw = (i, word, n = 1) => { let c = 0; for (const w of SC[i].words) if (norm(w.w).startsWith(norm(word)) && ++c === n) return B(i) + w.s - (i ? 0 : B(i)); console.warn('kw: no encuentro', i, word); return B(i) + 0.5; };
-  const WORDS = SC.flatMap((sc, i) => sc.words.map(w => ({ w: w.w, s: (i ? sc.start : 0) + w.s })));
+  // kw(escena, 'palabra', n) → segundo en que se dice la n-ésima vez esa palabra en esa escena (sin tildes ni mayúsculas:
+  // 'despues' encuentra «después»). Busca primero la palabra exacta; si no está, la que empieza así («explica» → «explicas»).
+  const at = (i, w) => B(i) + w.s - (i ? 0 : B(i));
+  const kw = (i, word, n = 1) => { const q = norm(word); for (const exact of [true, false]) { let c = 0;
+      for (const w of SC[i].words) if ((exact ? norm(w.w) === q : norm(w.w).startsWith(q)) && ++c === n) { if (!exact) console.warn(`kw: «${word}» no está tal cual en la escena ${i}; uso «${w.w}»`); return at(i, w); } }
+    console.warn('kw: no encuentro', i, word); return B(i) + 0.5; };
+  const WORDS = SC.flatMap((sc, i) => sc.words.map(w => ({ w: w.w, s: (i ? sc.start : 0) + w.s, fin: i + 1 < SC.length ? SC[i + 1].start : Infinity })));
   WORDS.forEach((w, i) => { w.e = i + 1 < WORDS.length ? Math.min(WORDS[i + 1].s, w.s + 0.6) : w.s + 0.6; });
   const VOEND = WORDS.length ? WORDS[WORDS.length - 1].e + 0.15 : 0;
   return { B, kw, WORDS, VOEND };
@@ -119,8 +123,9 @@ export const limpia = w => w.replace(/[.,:;!?¿¡«»"]/g, '');
 export function karaoke(WORDS, o = {}) { const y = o.y ?? 1590, size = o.size ?? 56, maxW = o.maxWords ?? 3, maxC = o.maxChars ?? 17;
   const ch = []; let cur = [];
   WORDS.forEach((w, i) => { cur.push(w); const nx = WORDS[i + 1], len = cur.map(q => limpia(q.w)).join(' ').length;
-    if (!nx || /[.,?:!]$/.test(w.w) || cur.length >= maxW || len > maxC || nx.s - w.e > 0.35) { ch.push(cur); cur = []; } });
-  const CH = ch.map((ws, i) => ({ ws, a: ws[0].s - 0.04, b: i + 1 < ch.length ? Math.min(ch[i + 1][0].s - 0.04, ws[ws.length - 1].e + 0.45) : ws[ws.length - 1].e + 0.6 }));
+    if (!nx || /[.,?:!]$/.test(w.w) || cur.length >= maxW || len > maxC || nx.s - w.e > 0.35 || nx.fin !== w.fin) { ch.push(cur); cur = []; } });
+  // cada bloque se apaga antes del cambio de escena, para que no quede sobre el destello de la siguiente
+  const CH = ch.map((ws, i) => ({ ws, a: ws[0].s - 0.04, b: Math.min(i + 1 < ch.length ? Math.min(ch[i + 1][0].s - 0.04, ws[ws.length - 1].e + 0.45) : ws[ws.length - 1].e + 0.6, (ws[0].fin ?? Infinity) - 0.12) }));
   return (c, t) => { const k = CH.find(q => t >= q.a && t < q.b); if (!k) return; const sp = tw(c, ' ', size) + 22;
     const ws = k.ws.map(q => tw(c, limpia(q.w), size)), total = ws.reduce((s, w) => s + w, 0) + sp * (k.ws.length - 1), p = ap(t, k.a, 0.1), sc = 0.9 + 0.1 * back(ap(t, k.a, 0.2));
     c.save(); c.globalAlpha *= p; c.translate(540, y); c.scale(sc, sc); c.translate(-540, -y); let x = 540 - total / 2;
@@ -260,7 +265,8 @@ export function barras(c, t, x, y, w, h, datos, at, o = {}) { const n = datos.le
     if (d.valor) tx(c, d.valor, bx + bw / 2, y + h - bh - 18, 34, { align: 'center', alpha: p });
     if (d.label) tx(c, d.label, bx + bw / 2, y + h + 46, 26, { f: MONO, w: 500, align: 'center', color: C.muted }); }); }
 
-// ---------- chat (WhatsApp, Instagram, web): burbujas(c, t, x, y, w, [{de:'otro'|'yo', s, at}], {alto, size, nombre}) ----------
+// ---------- chat (WhatsApp, Instagram, web): burbujas(c, t, x, y, w, [{de:'otro'|'yo', s, at}], {alto, size}) ----------
+// Dentro de un movil() de ~580 px usa size 40–46: con menos, el texto se ve diminuto en el teléfono.
 // Antes de cada mensaje de «otro» salen 3 puntos «escribiendo…». Si no caben, los mensajes suben solos.
 export function burbujas(c, t, x, y, w, msgs, o = {}) { const size = o.size || 30, pad = 26, lh = size * 1.3, maxB = w * 0.78, H0 = o.alto || 900; const items = [];
   let yy = 0; for (const m of msgs) { const L = envolver(c, m.s, maxB - pad * 2, size, { w: 500 }), bh = L.length * lh + pad * 1.4, bw = Math.max(...L.map(l => tw(c, l, size, { w: 500 }))) + pad * 2; items.push({ m, L, bh, bw, y: yy }); yy += bh + 18; }
