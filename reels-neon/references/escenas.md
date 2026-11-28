@@ -21,6 +21,7 @@ Las recetas del final están hechas en `ejemplo/video.ejemplo.js`, un reel sobre
 - **El problema:** `lista` con `icono:'x'` o `comparativa` (antes en gris). Que algo tiemble o se tache en su palabra (`xmark`).
 - **Cómo funciona:** un `movil` con un chat (`burbujas`) o una web dibujada dentro; o 3 `tarjeta`s escalonadas unidas con `flecha`.
 - **Para quién sirve / ejemplos:** cuadrícula de iconos (`icono` con `disco`) que se encienden uno a uno, cada uno con su nombre debajo; el que se nombra en la voz crece y brilla.
+- **Un nicho o caso, con lo que gana:** foto del sector a pantalla completa con Ken Burns y `velo(c, 1, 0.6)`, una etiqueta pequeña con su icono (`pill` + `icono`, p. ej. «🏠 INMOBILIARIA»), una pieza que muestre el beneficio (iconos de usuario que se encienden con check, una mini publicación con corazones que suben, un carné que pasa de «CURIOSO» a «SOCIO») y el beneficio en una píldora verde con check que entra en su palabra. Una escena por nicho vende más que una cuadrícula con todos.
 - **Resultado:** `comparativa` (ahora en azul), `sello('LISTO')` o un `numero` (solo con cifras reales).
 - **Dibujos propios del tema:** si el tema pide un objeto concreto (una muela, una maceta, un coche), dibújalo con formas sencillas (`roundRect`, `arc`, curvas) en el estilo: relleno marino, borde cian con brillo. Una pieza propia bien hecha vale más que tres genéricas.
 - **CTA:** `head('Comenta')` + `cartel(c, t, 540, 660, 'PALABRA', T.palabra)` + 2 píldoras con check (qué recibe y cómo le llega).

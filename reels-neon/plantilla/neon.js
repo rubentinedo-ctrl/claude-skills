@@ -61,8 +61,9 @@ export function glass(c, x, y, w, h, o = {}) { const r = o.r ?? 28;
   c.strokeStyle = g; c.lineWidth = o.lw || 2.5; c.beginPath(); c.roundRect(x, y, w, h, r); c.stroke(); c.restore(); }
 export function pop(c, x, y, p, fn) { if (p <= 0) return; const e = back(p); c.save(); c.translate(x, y); c.scale(e, e); c.globalAlpha *= clamp(p * 2); fn(c); c.restore(); }
 export function rise(c, p, dy, fn) { if (p <= 0) return; c.save(); c.globalAlpha *= clamp(p * 1.6); c.translate(0, (1 - out(p)) * dy); fn(c); c.restore(); }
-export function check(c, x, y, r, p, col = C.green) { pop(c, x, y, p, c2 => { c2.save(); c2.shadowColor = rgba(col, 0.8); c2.shadowBlur = 16; c2.fillStyle = col; c2.beginPath(); c2.arc(0, 0, r, 0, 7); c2.fill(); c2.restore();
-  c2.strokeStyle = C.bg; c2.lineWidth = r * 0.24; c2.lineCap = c2.lineJoin = 'round'; c2.beginPath(); c2.moveTo(-r * 0.42, 0); c2.lineTo(-r * 0.1, r * 0.32); c2.lineTo(r * 0.44, -r * 0.3); c2.stroke(); }); }
+// check verde: col es el color del círculo; la marca va en color de fondo, salvo que pases marca: '#hex' (p. ej. sobre una píldora verde).
+export function check(c, x, y, r, p, col = C.green, marca = C.bg) { pop(c, x, y, p, c2 => { c2.save(); c2.shadowColor = rgba(col, 0.8); c2.shadowBlur = 16; c2.fillStyle = col; c2.beginPath(); c2.arc(0, 0, r, 0, 7); c2.fill(); c2.restore();
+  c2.strokeStyle = marca; c2.lineWidth = r * 0.24; c2.lineCap = c2.lineJoin = 'round'; c2.beginPath(); c2.moveTo(-r * 0.42, 0); c2.lineTo(-r * 0.1, r * 0.32); c2.lineTo(r * 0.44, -r * 0.3); c2.stroke(); }); }
 export function pill(c, x, y, s, size, o = {}) { const w = tw(c, s, size, o) + (o.pad ?? 44), h = size * 1.75; c.save();
   if (o.fill !== false) { c.shadowColor = rgba(o.col || C.blue, 0.7); c.shadowBlur = 30; c.fillStyle = o.col || C.blue; c.beginPath(); c.roundRect(x - w / 2, y - h / 2, w, h, h / 2); c.fill(); }
   else glass(c, x - w / 2, y - h / 2, w, h, { r: h / 2, gb: 20 });
@@ -105,7 +106,8 @@ export function fondo(c, t) { c.fillStyle = C.bg; c.fillRect(0, 0, W, H);
   for (const p of PART) { const y = ((p.y - t * p.v) % H + H) % H, a = 0.3 + 0.3 * Math.sin(t * 2 + p.ph); c.fillStyle = rgba(C.cyan, a * 0.55); c.beginPath(); c.arc(p.x, y, p.s, 0, 7); c.fill(); }
   g = c.createRadialGradient(540, 960, 520, 540, 960, 1250); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.6)'); c.fillStyle = g; c.fillRect(0, 0, W, H); }
 // oscurece una foto a pantalla completa para que el texto se lea arriba y abajo
-export function velo(c, fuerte = 1) { const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, `rgba(4,11,22,${0.9 * fuerte})`); g.addColorStop(0.3, `rgba(4,11,22,${0.35 * fuerte})`); g.addColorStop(0.62, `rgba(4,11,22,${0.4 * fuerte})`); g.addColorStop(1, 'rgba(4,11,22,0.95)'); c.fillStyle = g; c.fillRect(0, 0, W, H); }
+// centro: oscuridad de la parte central (0,35 por defecto); súbela (0,6–0,7) si la foto tiene zonas claras y hay texto encima.
+export function velo(c, fuerte = 1, centro = 0.35) { const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, `rgba(4,11,22,${0.9 * fuerte})`); g.addColorStop(0.3, `rgba(4,11,22,${centro * fuerte})`); g.addColorStop(0.62, `rgba(4,11,22,${(centro + 0.05) * fuerte})`); g.addColorStop(1, 'rgba(4,11,22,0.95)'); c.fillStyle = g; c.fillRect(0, 0, W, H); }
 
 // ---------- montaje: una escena por frase, con empuje de zoom al entrar y fundido al salir ----------
 // SCN = [[inicio, fn(c, t, K)], …]  (ordenadas). END = duración total.

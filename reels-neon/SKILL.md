@@ -130,3 +130,6 @@ Para revisar un instante concreto: `node render.mjs --stills 12.3,12.6`; salen e
 - Propón un **copy corto**: 2–4 líneas que den curiosidad sin repetir el guion, el CTA con la palabra y hasta 5 hashtags.
 - Añade la **respuesta automática para el DM**.
 - Si el CTA promete algo (guía, skill, plantilla) que aún no existe, dilo claramente.
+
+## 10 · Cambios y segundas versiones
+Antes de rehacer, guarda la versión aprobada: `guion.txt`, `video.js`, `timing.js`, `audio/toma.*`, `audio/vo.wav`, `audio/words.json` y los mp4 con sufijo `-v1` (o en `v1/`). `tiempos.py` y `build.sh` sobrescriben. Si solo cambia lo visual, no regeneres la voz: edita `video.js`, revisa y vuelve a `./build.sh <nombre>-v2`.
