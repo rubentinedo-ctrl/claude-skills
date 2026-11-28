@@ -9,4 +9,5 @@ python3 audio/mezcla.py "$DUR"
 ffmpeg -y -v error -i "_$N-mudo.mp4" -i audio/_mezcla.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart "$N.mp4"
 ffmpeg -y -v error -i "$N.mp4" -c:v libx264 -preset medium -crf 25 -maxrate 4M -bufsize 8M -c:a aac -b:a 128k -movflags +faststart "$N-movil.mp4"
 rm -f "_$N-mudo.mp4"
-echo "LISTO: $N.mp4 ($(du -h "$N.mp4" | cut -f1)) · $N-movil.mp4 ($(du -h "$N-movil.mp4" | cut -f1)) · ${DUR}s"
+LUFS=$(ffmpeg -nostats -i "$N.mp4" -af ebur128 -f null - 2>&1 | awk '/I:/{v=$2} END{print v}')
+echo "LISTO: $N.mp4 ($(du -h "$N.mp4" | cut -f1)) · $N-movil.mp4 ($(du -h "$N-movil.mp4" | cut -f1)) · ${DUR}s · volumen ${LUFS} LUFS (objetivo −14)"

@@ -1,9 +1,33 @@
 # Recetas de escenas
 
-Cada receta indica en qué función de `video.ejemplo.js` está hecha. Cópiala y cambia los textos.
 Firma de una escena: `function sX(c, t, K) { … }`. `t` es el tiempo global y `T.algo` el momento de una palabra (`kw()`).
+Las piezas genéricas se ven todas en `plantilla/piezas.demo.js`: es el mejor punto de partida para un tema cualquiera.
+Las recetas del final están hechas en `ejemplo/video.ejemplo.js`, un reel sobre tecnología: copia la técnica, no el contenido.
 
-## Piezas de `neon.js`
+## Piezas genéricas (cualquier tema)
+- `icono(c, 'nombre', x, y, tamaño, {col, disco:true, p, moneda:'€'})`: iconos de línea con brillo. Nombres: check, x, alerta, reloj, usuario, grupo, chat, movil, calendario, grafica, dinero, estrella, corazon, play, camara, mundo, idea, escudo, rayo, documento, lupa, carrito, ubicacion, megafono, diente, casa, cubiertos, pesa, maletin, ojo, enlace (`NOMBRES_ICONOS`).
+- `numero(c, t, x, y, radio, valor, at, {sufijo, prefijo, label, decimales, parte})`: número grande que cuenta con anillo. **Solo cifras que dio el usuario o que estén en una fuente.**
+- `lista(c, t, x, y, w, [{s, at}], {icono:'x', alto, size})`: filas que entran con check (o con ✕ roja).
+- `comparativa(c, t, x, y, w, {titulo:'Antes', items}, {titulo:'Ahora', items})`: dos columnas, gris con ✕ y azul con check.
+- `barras(c, t, x, y, w, h, [{label, v, col, valor}], at)`: barras que crecen. Si no hay datos reales, rotula «ejemplo ilustrativo».
+- `burbujas(c, t, x, y, w, [{de:'otro'|'yo', s, at}], {alto, size})`: chat con «escribiendo…»; suben solas si no caben.
+- `movil(c, K, null, x, y, w, h, t, 0, '', (c, x, y, w, h) => { … })`: móvil con lo que dibujes dentro (un chat, una web, una agenda). Con una ruta de foto en vez de `null`, muestra la foto.
+- `tarjeta(c, x, y, w, h, {icono, titulo, texto, p})`: tarjeta de cristal con icono, título y texto ajustado.
+- `xmark(c, x, y, tamaño, p)`, `sello(c, x, y, 'LISTO', p)`, `flecha(c, x1, y1, x2, y2, p)`, `cartel(c, t, x, y, 'PALABRA', at)` (CTA neón).
+- `envolver(c, texto, anchoMax, size)` y `parrafo(c, texto, x, y, anchoMax, size)`: texto en varias líneas.
+
+## Recetas genéricas
+- **Gancho con foto:** foto a pantalla completa con Ken Burns (`cover` con zoom que crece), `velo()`, titular de 2 líneas con la segunda en píldora y 3 chips con check abajo. Sin foto: un número grande o un icono enorme con `disco` y un `sello`.
+- **El problema:** `lista` con `icono:'x'` o `comparativa` (antes en gris). Que algo tiemble o se tache en su palabra (`xmark`).
+- **Cómo funciona:** un `movil` con un chat (`burbujas`) o una web dibujada dentro; o 3 `tarjeta`s escalonadas unidas con `flecha`.
+- **Para quién sirve / ejemplos:** cuadrícula de iconos (`icono` con `disco`) que se encienden uno a uno, cada uno con su nombre debajo; el que se nombra en la voz crece y brilla.
+- **Resultado:** `comparativa` (ahora en azul), `sello('LISTO')` o un `numero` (solo con cifras reales).
+- **Dibujos propios del tema:** si el tema pide un objeto concreto (una muela, una maceta, un coche), dibújalo con formas sencillas (`roundRect`, `arc`, curvas) en el estilo: relleno marino, borde cian con brillo. Una pieza propia bien hecha vale más que tres genéricas.
+- **CTA:** `head('Comenta')` + `cartel(c, t, 540, 660, 'PALABRA', T.palabra)` + 2 píldoras con check (qué recibe y cómo le llega).
+
+## Recetas del reel de ejemplo (`ejemplo/video.ejemplo.js`)
+
+### Piezas básicas de `neon.js`
 
 **Texto**
 - `head(c, t, t0, [{s, c?, pill?, at?}], {y, size, x?, align?, lh?})`: titular por líneas. `pill` lo pone en píldora y `at` es el segundo en que entra.
@@ -27,7 +51,7 @@ Firma de una escena: `function sX(c, t, K) { … }`. `t` es el tiempo global y `
 **Imágenes**
 - `cover(c, img, x, y, w, h, zoom, ox, oy, radio)`: foto que llena el hueco. Con un zoom que crece con `t` hace Ken Burns.
 - `velo(c)`: oscurece una foto a pantalla completa.
-- `mascota(c, K, ruta, x, y, alto, p, t, {right, slide, noGlow, still})`: la mascota.
+- `mascota(c, K, ruta, x, y, alto, p, t, {right, slide, noGlow, still})`: la mascota (solo si el usuario trae la suya).
 - `movil(c, K, ruta, x, y, w, h, t, progreso, 'TU REEL')`: un móvil con una foto dentro.
 
 **Montaje y cierre**
@@ -35,6 +59,8 @@ Firma de una escena: `function sX(c, t, K) { … }`. `t` es el tiempo global y `
 - `marcaAgua(c, '@usuario')`.
 
 **Utilidades:** `clamp`, `lerp`, `sm` (suave), `out`, `back` (rebote) y `rgba(hex, alfa)`.
+
+Las recetas siguientes son del reel de ejemplo (tecnología, con mascota). Sirven como técnica; en un reel sin mascota, quita sus líneas `mascota(...)`.
 
 ## Gancho con foto realista: `s0`
 - Foto a pantalla completa con Ken Burns (`cover` con un zoom que crece), `velo()` y un titular de 2 líneas, la segunda en píldora.
@@ -90,8 +116,6 @@ Firma de una escena: `function sX(c, t, K) { … }`. `t` es el tiempo global y `
 - Después de la voz, la escena se funde y entra `firma()`: foto con aro, nombre, @usuario, lema y logo.
 
 ## Otras ideas que encajan en el estilo
-- **Número grande:** anillo que cuenta de 0 a N en su palabra, por ejemplo «30 segundos».
-- **Comparativa en dos columnas:** «antes» en gris tachado y «ahora» en azul con check.
 - **Encuesta o ranking:** filas con puntos de esfuerzo y la opción buena con el sello «LA MÁS FÁCIL».
 - **Batería o medidor que baja:** sirve como metáfora de olvido o de gasto.
 - **Cuadrícula de decenas de miniaturas** que se llena, para hablar de escala.

@@ -19,7 +19,7 @@ window.VIDEO = { dur: v.dur, fps: v.fps || 30 };
 if (!RENDER) { // vista previa
   const fixed = q.get('t'); if (fixed != null) { window.renderAt(+fixed); }
   else {
-    const vo = new Audio('audio/vo.wav'), mu = new Audio('audio/music.mp3'); mu.volume = 0.35; let playing = false, t0 = 0, base = 0;
+    const vo = new Audio('audio/vo.wav'), mu = new Audio('audio/music.mp3'); mu.onerror = () => { if (!mu.src.endsWith('.wav')) mu.src = 'audio/music.wav'; }; mu.volume = 0.35; let playing = false, t0 = 0, base = 0;
     const now = () => playing ? base + (performance.now() - t0) / 1000 : base;
     const sync = () => { for (const a of [vo, mu]) { a.currentTime = Math.min(now(), (a.duration || 1e9) - 0.01); playing ? a.play().catch(() => {}) : a.pause(); } };
     canvas.onclick = () => { base = now(); playing = !playing; t0 = performance.now(); sync(); };

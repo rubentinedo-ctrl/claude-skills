@@ -1,9 +1,15 @@
 # Música de fondo básica, generada por código (synthwave sencilla, sin derechos de terceros).
-# Uso: python3 audio/musica.py <duración_s> [bpm=112] [salida=audio/music.wav]
+# Uso: python3 audio/musica.py [duración_s] [bpm=112] [salida=audio/music.wav]
+#   Sin duración, usa la de audio/vo.wav + 4 s (lo que suele durar el reel con el cierre).
 # Para un resultado más profesional usa tu propia pista: ponla en audio/music.mp3 y no ejecutes esto.
 import sys, wave, numpy as np
 SR = 44100
-DUR = float(sys.argv[1]) if len(sys.argv) > 1 else 50
+def _vo():
+    try:
+        import wave as _w
+        with _w.open('audio/vo.wav') as f: return f.getnframes() / f.getframerate() + 4
+    except Exception: return 50
+DUR = float(sys.argv[1]) if len(sys.argv) > 1 else _vo()
 BPM = float(sys.argv[2]) if len(sys.argv) > 2 else 112
 OUT = sys.argv[3] if len(sys.argv) > 3 else 'audio/music.wav'
 rng = np.random.default_rng(3)

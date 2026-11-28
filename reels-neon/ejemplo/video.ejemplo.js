@@ -1,9 +1,10 @@
 // EJEMPLO COMPLETO de reels-neon: «Este reel lo hizo Claude Code» (51 s, 9 escenas, CTA «Comenta REEL»).
 // Úsalo como referencia de cómo se monta un vídeo: tiempos desde la voz → escenas → subtítulos → sonidos.
-// Para verlo:  node render.mjs --video video.ejemplo.js --every 2   (o ./build.sh ejemplo video.ejemplo.js)
+// Es SOLO una referencia: no copies sus textos, su mascota, su firma ni su @usuario a los reels del usuario.
+// Para verlo dentro de un proyecto:  cp -R <skill>/ejemplo ./ejemplo && node render.mjs --video ejemplo/video.ejemplo.js --every 2
 // Mascota de ejemplo: Iva, de TinergIA. Fotos de ejemplo: generadas con IA.
 import { C, W, H, MONO, clamp, lerp, E, rgba, sm, ap, back, out, typed, norm, tiempos, font, tx, tw, head, glass, pop, rise, check, pill, cover, mascota,
-  ring, linkIcon, star, fondo, escenas, destellos, karaoke, firma, marcaAgua } from './neon.js';
+  ring, linkIcon, star, fondo, escenas, destellos, karaoke, firma, marcaAgua } from '../neon.js';
 import { SC } from './timing.ejemplo.js';
 
 const { B, kw, WORDS, VOEND } = tiempos(SC);

@@ -12,7 +12,7 @@ Si la skill no aparece en la conversación en la que la instalaste, abre una con
 ## Skills disponibles
 | Skill | Qué hace | Enlace para instalar |
 |---|---|---|
-| **reels-neon** | Reels verticales animados por código en estilo neón con mascota: voz sincronizada, fotos de IA, subtítulos karaoke, música y efectos. | `https://github.com/rubentinedo-ctrl/claude-skills/tree/main/reels-neon` |
+| **reels-neon** | Reels verticales animados por código en estilo neón, sobre el tema que quieras: voz sincronizada, iconos y gráficos animados, fotos de IA, subtítulos karaoke, música y efectos. | `https://github.com/rubentinedo-ctrl/claude-skills/tree/main/reels-neon` |
 
 ---
 

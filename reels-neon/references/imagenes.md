@@ -1,8 +1,10 @@
-# Mascota y fotos realistas
+# Fotos realistas y mascota (las dos opcionales)
 
 Sirve cualquier generador de imágenes: ChatGPT, Gemini (Nano Banana), Higgsfield, Freepik/Magnific (tiene imágenes gratis cada día), Midjourney… Si el entorno tiene un conector de imágenes, úsalo. Si no, dale al usuario los prompts para que los genere y guarde los archivos en la carpeta.
 
-## Mascota (4–6 poses del mismo personaje)
+## Mascota (solo si el usuario la pide y trae su personaje o logo)
+Por defecto el reel no lleva mascota. Nunca uses la de `ejemplo/` en un reel del usuario.
+
 1. **Pose base.** Si tiene logo o personaje, úsalo como imagen de referencia. Si no, describe uno sencillo y simpático.
    > Premium 3D character render of [descripción: cuerpo, cabeza, colores, accesorios, logo en el pecho]. Cute chibi 3D, Pixar-like proportions, soft glossy materials, strong neon cyan rim light and blue glow around the silhouette. Front view, friendly idle pose. Very dark navy background (#050E1C) with a faint blue glow. Full body centered with empty space around. No text.
 2. **Resto de poses.** Siempre **con la base como referencia**, repitiendo los rasgos fijos:

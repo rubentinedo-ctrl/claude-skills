@@ -1,8 +1,9 @@
 # Reels neón · skill para Claude Code
 
-Claude Code crea **reels verticales animados** (Instagram, TikTok, Shorts) en estilo neón con mascota 3D:
-una escena por frase con destello de luz, tarjetas de cristal, terminal/chat/código que se escriben solos,
+Claude Code crea **reels verticales animados** (Instagram, TikTok, Shorts) en estilo neón sobre el tema que quieras:
+una escena por frase con destello de luz, tarjetas de cristal, iconos, números, listas, antes/ahora, chats,
 fotos realistas con IA, subtítulos karaoke, tu voz sincronizada palabra a palabra, música, efectos y CTA.
+Si tienes mascota o logo, puede salir en el reel; si no, no hace falta.
 Todo se genera **por código**: no hay plantillas ni editor de vídeo.
 
 Hecha por **Rubén Tinedo** · [@rubentinedo.ia](https://instagram.com/rubentinedo.ia) · TinergIA.
@@ -23,7 +24,7 @@ Si no aparece en esa conversación, abre una nueva. Para hacerlo a mano, deja la
   - Windows: `winget install ffmpeg`;
   - Linux: `sudo apt install ffmpeg`.
 - **Python 3** con `numpy` y `pillow`: `python3 -m pip install numpy pillow`.
-- **Para la voz (opcional):** una cuenta de ElevenLabs con tu `ELEVENLABS_API_KEY` en un archivo `.env`. También sirve cualquier audio tuyo más Whisper: `pip install openai-whisper`.
+- **Para la voz:** una cuenta de ElevenLabs con tu `ELEVENLABS_API_KEY` en un archivo `.env` (recomendado). También sirve un conector de voz o cualquier audio tuyo, más Whisper: `pip install openai-whisper`.
 - **Para recortar la mascota (opcional):** `python3 -m pip install "rembg[cpu]"`.
 - **Para las imágenes (opcional):** cualquier generador de imágenes (ChatGPT, Gemini, Higgsfield, Freepik…).
 
@@ -33,10 +34,11 @@ Al instalarla, Claude revisa qué tienes y te ofrece instalar lo que falte. Si u
 
 ## Qué incluye
 - `SKILL.md`: las instrucciones que sigue Claude.
-- `plantilla/`: el motor (render a MP4, mezcla de audio a −14 LUFS, efectos sintetizados y música básica generada por código), las piezas del estilo (`neon.js`) y un **reel de ejemplo completo** (`video.ejemplo.js`).
+- `plantilla/`: lo que se copia a cada proyecto. El motor (render a MP4, mezcla de audio a −14 LUFS, efectos sintetizados y música básica generada por código), las fuentes, las piezas del estilo (`neon.js`) y una galería de piezas (`piezas.demo.js`).
+- `ejemplo/`: un **reel de ejemplo completo** del autor («Este reel lo hizo Claude Code»), solo como referencia.
 - `references/`: el estilo, recetas de escenas, la voz y las imágenes.
 
-La mascota de ejemplo es Iva, de TinergIA. Para tus reels, Claude te ayuda a crear la tuya.
+La mascota del ejemplo es Iva, de TinergIA, y no aparece en tus reels. Si quieres una mascota propia, Claude te ayuda a crearla a partir de tu logo.
 
 ---
 
